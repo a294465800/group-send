@@ -84,16 +84,16 @@ body > .el-container {
           <div class="collapse" @click="collapseNav">
             <i :class="{'active': isCollapse}" class="el-icon-caret-left"></i>
           </div>
-            <el-submenu index="/commodity">
-              <template slot="title">
-                <i class="el-icon-goods"></i>
-                <span>内容管理</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="/audit/list">内容列表</el-menu-item>
-                <el-menu-item index="/list/order">成交订单</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
+          <el-submenu index="/commodity">
+            <template slot="title">
+              <i class="el-icon-goods"></i>
+              <span>内容管理</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="/audit/list">内容列表</el-menu-item>
+              <el-menu-item index="/audit/links">链接列表</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
         </el-menu>
       </el-aside>
       <!-- 左侧导航 -->

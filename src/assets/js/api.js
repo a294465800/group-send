@@ -70,5 +70,25 @@ export default {
       }).catch(error => {
         this.APIError(error.response)
       })
+  },
+
+  /**
+   * 获取链接列表
+   * @param {Object} data {page_index, page_size, id}
+   * @param {Function} cb 回调
+   */
+  getAuditLinks(data, cb) {
+    axios.get(`${host}manager/api_info`, {
+        params: data
+      })
+      .then(res => {
+        if (0 === res.data.status) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
   }
 }

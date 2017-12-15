@@ -4,6 +4,7 @@ import Login from '@/pages/login/login'
 import Index from '@/pages/index'
 import IndexContent from '@/pages/IndexContent'
 import AuditList from '@/pages/audit/auditList'
+import AuditLinks from '@/pages/audit/auditLinks'
 
 Vue.use(Router)
 
@@ -25,6 +26,11 @@ export default new Router({
           path: 'audit/list',
           name: 'AuditList',
           component: AuditList
+        },
+        {
+          path: 'audit/links',
+          name: 'AuditLinks',
+          component: AuditLinks
         }
       ]
     }
