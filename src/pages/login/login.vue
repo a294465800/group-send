@@ -82,9 +82,7 @@ export default {
               type: "success",
               message: "登录成功"
             });
-            this.$router.push({
-              name: "indexContent"
-            });
+            this.$router.push('/');
           });
         } else {
           return false;

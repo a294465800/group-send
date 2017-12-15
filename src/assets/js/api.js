@@ -8,7 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 const host = 'http://103.85.24.76:8800/'
 
 axios.defaults.timeout = 20000
-// axios.defaults.withCredentials = true
+axios.defaults.withCredentials = true
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 axios.interceptors.request.use(config => {
   //在发送 post 请求请设置一下数据格式
@@ -51,4 +51,24 @@ export default {
         this.APIError(error.response)
       })
   },
+
+  /**
+   * 获取审核内容列表
+   * @param {Object} data {page_index, page_size, check}
+   * @param {Function} cb 回调
+   */
+  getAuditList(data, cb) {
+    axios.get(`${host}baoke/all_content`, {
+        params: data
+      })
+      .then(res => {
+        if (0 === res.data.status) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  }
 }

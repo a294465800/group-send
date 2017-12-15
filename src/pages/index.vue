@@ -87,10 +87,10 @@ body > .el-container {
             <el-submenu index="/commodity">
               <template slot="title">
                 <i class="el-icon-goods"></i>
-                <span>审核管理</span>
+                <span>内容管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="/list/commodity">内容列表</el-menu-item>
+                <el-menu-item index="/audit/list">内容列表</el-menu-item>
                 <el-menu-item index="/list/order">成交订单</el-menu-item>
               </el-menu-item-group>
             </el-submenu>

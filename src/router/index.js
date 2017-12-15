@@ -3,12 +3,12 @@ import Router from 'vue-router'
 import Login from '@/pages/login/login'
 import Index from '@/pages/index'
 import IndexContent from '@/pages/IndexContent'
+import AuditList from '@/pages/audit/auditList'
 
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
+  routes: [{
       path: '/login',
       name: 'Login',
       component: Login
@@ -16,11 +16,15 @@ export default new Router({
     {
       path: '/',
       component: Index,
-      children: [
-        {
+      children: [{
           path: '',
           name: 'IndexContent',
           component: IndexContent
+        },
+        {
+          path: 'audit/list',
+          name: 'AuditList',
+          component: AuditList
         }
       ]
     }
