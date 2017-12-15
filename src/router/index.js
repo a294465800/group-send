@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/pages/login/login'
 import Index from '@/pages/index'
+import IndexContent from '@/pages/IndexContent'
 
 Vue.use(Router)
 
@@ -14,8 +15,14 @@ export default new Router({
     },
     {
       path: '/',
-      name: 'Index',
-      component: Index
+      component: Index,
+      children: [
+        {
+          path: '',
+          name: 'IndexContent',
+          component: IndexContent
+        }
+      ]
     }
   ]
 })
