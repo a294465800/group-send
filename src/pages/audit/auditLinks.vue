@@ -6,7 +6,7 @@
   <section class="flex-column loading-wrap flex-center" v-if="loading">
     <i class="el-icon-loading"></i>
   </section>
-  <section class="container" v-else>
+  <section class="container flex-column" v-else>
 
     <!-- 面包屑导航 -->
 
@@ -18,9 +18,13 @@
 
     <!-- 面包屑导航 -->
 
-    <div class="tale-list">
-      <el-table :data="auditList" border stripe style="min-width: 900px;">
-        <el-table-column prop="id" label="ID" sortable></el-table-column>
+    <div class="table-list">
+      <el-table :data="auditLinks" border stripe style="min-width: 900px;">
+        <el-table-column prop="id" label="ID" sortable>
+          <template slot-scope="scope">
+            <a :href="host + 'baoke_api/' + scope.row.id" target="_blank">{{ host + 'baoke_api/' + scope.row.id }}</a>
+          </template>
+        </el-table-column>
         <el-table-column prop="times" label="使用次数">
           <template slot-scope="scope">
             {{ scope.row.times }}次s
@@ -34,7 +38,7 @@
 
     <!-- 页码 -->
     <div class="pages">
-      <el-pagination @current-change="handleCurrentChange" @size-change="handleSizeChange" :current-page.sync="getData.currentPage" :page-size="getData.size" layout="total, sizes, prev, pager, next" :total="count">
+      <el-pagination @current-change="handleCurrentChange" @size-change="handleSizeChange" :current-page.sync="getData.page_index" :page-size="getData.page_size" layout="total, sizes, prev, pager, next" :total="count">
       </el-pagination>
     </div>
     <!-- /页码 -->
@@ -47,31 +51,41 @@ export default {
   data() {
     return {
       loading: true,
+      host: this.$http.host,
 
       count: 0,
       getData: {
-        size: 20,
-        currentPage: 1
+        page_size: 20,
+        page_index: 1
       }
     };
   },
 
   created() {
     this.$http.getAuditLinks(this.getData, res => {
-      const data = res.data.data
-      this.auditList = data.items
-      this.count = data.count
-      this.loading = false
+      const data = res.data.data;
+      this.auditLinks = data.items;
+      this.count = data.count;
+      this.loading = false;
     });
   },
 
   methods: {
     //页码变化
-    handleCurrentChange(page) {},
+    handleCurrentChange(page) {
+      this.$http.getAuditLinks(getData, res => {
+        const data = res.data.data;
+        this.auditLinks = data.items;
+      });
+    },
 
     //数据数量变化
     handleSizeChange(size) {
-      this.getData.currentPage = 1;
+      this.getData.page_index = 1;
+      this.$http.getAuditLinks(getData, res => {
+        const data = res.data.data;
+        this.auditLinks = data.items;
+      });
     }
   }
 };

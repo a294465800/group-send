@@ -6,7 +6,7 @@
   <section class="flex-column loading-wrap flex-center" v-if="loading">
     <i class="el-icon-loading"></i>
   </section>
-  <section class="container" v-else>
+  <section class="container flex-column" v-else>
 
     <!-- 面包屑导航 -->
 
@@ -18,9 +18,28 @@
 
     <!-- 面包屑导航 -->
 
-    <div class="tale-list">
+    <!-- 功能 -->
+    <div class="operation">
+      <el-form :inline="true" :model="getData" style="margin-bottom: 20px;">
+        <el-form-item label="审核状态">
+          <el-select v-model="getData.check" placeholder="审核状态" @change="searchState">
+            <el-option label="全部" value=""></el-option>
+            <el-option label="未审核" value="uncheck"></el-option>
+            <el-option label="已通过" value="success"></el-option>
+            <el-option label="未通过" value="failure"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+    </div>
+    <!-- /功能 -->
+
+    <div class="table-list">
       <el-table :data="auditList" border stripe style="min-width: 900px;">
-        <el-table-column prop="id" label="ID" sortable></el-table-column>
+        <el-table-column prop="id" label="ID" sortable>
+          <template slot-scope="scope">
+            <a :href="host + 'baoke_api/' + scope.row.id" target="_blank">{{ host + 'baoke_api/' + scope.row.id }}</a>
+          </template>
+        </el-table-column>
         <el-table-column prop="user_id" label="用户ID" sortable></el-table-column>
         <el-table-column prop="content" label="内容" show-overflow-tooltip></el-table-column>
         <el-table-column prop="created_time" label="发布时间"></el-table-column>
@@ -37,7 +56,7 @@
 
     <!-- 页码 -->
     <div class="pages">
-      <el-pagination @current-change="handleCurrentChange" @size-change="handleSizeChange" :current-page.sync="getData.currentPage" :page-size="getData.size" layout="total, sizes, prev, pager, next" :total="count">
+      <el-pagination @current-change="handleCurrentChange" @size-change="handleSizeChange" :current-page.sync="getData.page_index" :page-size="getData.page_size" layout="total, sizes, prev, pager, next" :total="count">
       </el-pagination>
     </div>
     <!-- /页码 -->
@@ -51,20 +70,22 @@ export default {
     return {
       loading: true,
 
+      host: this.$http.host,
       count: 0,
       getData: {
-        size: 20,
-        currentPage: 1
+        page_size: 20,
+        page_index: 1,
+        check: ""
       }
     };
   },
 
   created() {
     this.$http.getAuditList(this.getData, res => {
-      const data = res.data.data
-      this.auditList = data.items
-      this.count = data.count
-      this.loading = false
+      const data = res.data.data;
+      this.auditList = data.items;
+      this.count = data.count;
+      this.loading = false;
     });
   },
 
@@ -74,7 +95,18 @@ export default {
 
     //数据数量变化
     handleSizeChange(size) {
-      this.getData.currentPage = 1;
+      this.getData.page_index = 1;
+    },
+
+    //搜索
+    searchState() {
+      let getData = this.getData;
+      getData.page_index = 1;
+      this.$http.getAuditList(getData, res => {
+        const data = res.data.data;
+        this.auditList = data.items;
+        this.count = data.count;
+      });
     }
   }
 };
