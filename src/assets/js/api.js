@@ -53,6 +53,23 @@ export default {
   },
 
   /**
+   * 退出
+   * @param {Function} cb 回调
+   */
+  logout(cb) {
+    axios.get(`${host}user/logout`)
+      .then(res => {
+        if (0 === res.data.status) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
    * 获取审核内容列表
    * @param {Object} data {page_index, page_size, check}
    * @param {Function} cb 回调

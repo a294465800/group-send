@@ -127,8 +127,10 @@ export default {
   methods: {
     //退出登录
     logout() {
-      sessionStorage.username = "";
-      this.$router.push("/login");
+      this.$http.logout(res => {
+        sessionStorage.username = "";
+        this.$router.push("/login");
+      });
     },
 
     //控制展开
