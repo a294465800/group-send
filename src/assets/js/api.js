@@ -12,7 +12,7 @@ axios.defaults.withCredentials = true
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 axios.interceptors.request.use(config => {
   //在发送 post 请求请设置一下数据格式
-  if (config.method === 'post') {
+  if (config.method === 'post' || config.method === 'put') {
     config.data = qs.stringify(config.data)
   }
   return config
@@ -81,6 +81,42 @@ export default {
     axios.get(`${host}manager/api_info`, {
         params: data
       })
+      .then(res => {
+        if (0 === res.data.status) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 提交新增链接内容
+   * @param {Object} data {content, times}
+   * @param {Function} cb 
+   */
+  postAuditLink(data, cb) {
+    axios.post(`${host}manager/api_info`, data)
+      .then(res => {
+        if (0 === res.data.status) {
+          typeof cb === 'function' && cb(res)
+        } else {
+          this.APIError(res)
+        }
+      }).catch(error => {
+        this.APIError(error.response)
+      })
+  },
+
+  /**
+   * 修改链接内容
+   * @param {Object} data {content, times}
+   * @param {Function} cb 回调
+   */
+  putAuditLink(id, data, cb) {
+    axios.put(`${host}manager/api_info/${id}`, data)
       .then(res => {
         if (0 === res.data.status) {
           typeof cb === 'function' && cb(res)

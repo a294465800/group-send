@@ -91,11 +91,22 @@ export default {
 
   methods: {
     //页码变化
-    handleCurrentChange(page) {},
+    handleCurrentChange(page) {
+      this.getData.page_index = page;
+      this.$http.getAuditList(this.getData, res => {
+        const data = res.data.data;
+        this.auditList = data.items;
+      });
+    },
 
     //数据数量变化
     handleSizeChange(size) {
+      this.getData.page_size = size;
       this.getData.page_index = 1;
+      this.$http.getAuditList(this.getData, res => {
+        const data = res.data.data;
+        this.auditList = data.items;
+      });
     },
 
     //搜索
